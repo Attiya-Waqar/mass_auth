@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import FormHeader from '../components/form_header';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -34,31 +36,43 @@ const Login = () => {
 };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+    <>
+    < FormHeader />
+      <div className="row justify-content-center mt-5 p-5">
+        <div className="col-2 py-3">
+          <h2>Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group py-4">
+              <label className="" htmlFor="username">Username:</label>
+              <input className="form-control bg-secondary text-white"
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password:</label>
+              <input className="form-control bg-secondary text-white"
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="row justify-content-between">
+              <div className="col-auto">
+                <button className="btn btn-outline-secondary mt-3" type="submit">Login</button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+              </div>
+              <div className="row mt-3">
+                <Link to="/register" style={{fontSize:'1vw'}}>Dont have an account?</Link>
+              </div>
+            </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 

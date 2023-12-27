@@ -3,14 +3,14 @@ const User = require('../models/User'); // Import the User model
 // Function to handle user creation
 const createUser = async (req, res) => 
 {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
   try 
   {
     const newUser = new User({
       username,
       email,
-      // Other fields as needed
+      password,
     });
 
     const savedUser = await newUser.save();

@@ -21,4 +21,19 @@ router.post('/login', async (req, res) => {
 
 router.post('/users', authController.createUser);
 
+// Register
+router.post('/register', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    // Create a new user document and save it to the database
+    const newUser = new User({ username, email, password });
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const User = require('./models/User'); // Import the User model
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/Authentication', {
+mongoose.connect('mongodb://localhost:27017/Authentication', 
+{
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -10,6 +11,7 @@ mongoose.connect('mongodb://localhost:27017/Authentication', {
 // Create and save a user
 const newUser = new User({
   username: 'abc',
+  email: 'abc@abc.com',
   password: 'abc',
   // Other fields as needed
 });
