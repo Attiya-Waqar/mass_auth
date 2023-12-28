@@ -9,11 +9,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
   e.preventDefault();
+  const accessToken = localStorage.getItem('accessToken');
 
   try {
     const response = await fetch('http://localhost:5000/api/login', {
       method: 'POST',
       headers: {
+         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),

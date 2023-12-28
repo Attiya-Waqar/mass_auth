@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FormHeader from '../components/form_header';
 
 const Register = () => {
@@ -7,30 +7,43 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
+    const accessToken = localStorage.getItem('accessToken');
+    try 
+    {
       const response = await fetch('http://localhost:5000/api/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+        headers: 
+        {
+        	Authorization: `Bearer ${accessToken}`,
+          	'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, email, password }),
         credentials: 'include', // Include credentials if needed
       });
 
-      if (!response.ok) {
+      if (!response.ok) 
+      {
         const errorMessage = await response.text();
         throw new Error(errorMessage || 'Registration failed');
       }
 
       const data = await response.json();
       console.log(data); // Handle success data or store token
+      if (data.accessToken) 
+      {
+        localStorage.setItem('accessToken', data.accessToken); // Store the access token
+        console.log("stored access storage in local storage");
+      }
 
       // Redirect to another page or update state upon successful registration
-    } catch (error) {
+      navigate('/login');
+    } 
+    catch (error)
+    {
       setError(error.message);
       console.error('Error:', error);
     }
