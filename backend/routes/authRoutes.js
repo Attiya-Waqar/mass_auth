@@ -1,3 +1,4 @@
+//const Navigate = useNavigate();
 const express = require('express');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
@@ -6,62 +7,70 @@ const jwt = require('jsonwebtoken');
 const authController = require('../controllers/authController');
 
 // Generate Access Token
-const generateAccessToken = (userId) => {
+const generateAccessToken = (userId) => 
+{
   return jwt.sign({ userId }, 'yourAccessTokenSecretKey', { expiresIn: '15m' });
 };
 
 // Generate Refresh Token
-const generateRefreshToken = (userId) => {
+const generateRefreshToken = (userId) => 
+{
   return jwt.sign({ userId }, 'yourRefreshTokenSecretKey');
 };
 
 // Login
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => 
+{
   const { username, password } = req.body;
 
-  try {
+  try 
+  {
     const user = await User.findOne({ username });
-    if (!user) {
+    if (!user)
+    {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    if (!passwordMatch) 
+    {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    res.status(200).json({ accessToken, refreshToken, message: 'Login successful' });
-    // On successful login
-    //const user = { username: 'exampleUser' }; // Replace with your user object
-    // const accessToken = generateAccessToken(user);
-    // const refreshToken = generateRefreshToken(user);
+    //res.status(200).json({ accessToken, refreshToken, message: 'Login successful' });
 
     res.cookie('refreshToken', refreshToken, 
     {
-    httpOnly: true,
-    // Add more secure options like secure: true for HTTPS, sameSite: 'strict', etc.
+      httpOnly: true,
     });
 
-    res.json({ accessToken });
+    res.status(200).json(
+    {
+      message: 'Login successful',
+      redirectTo: 'http://localhost:3000/dashboard'
+    });
   } 
   catch (err) 
   {
-    res.status(500).json({ message: err.message });
+    //res.status(500).json({ message: err.message });
+    console.log(err.message);
   }
 });
 
 router.post('/users', authController.createUser);
 
 // Register
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => 
+{
   const { username, email, password } = req.body;
 
-  try {
+  try 
+  {
     const existingUser = await User.findOne({ username });
-    if (existingUser) {
+    if (existingUser) 
+    {
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -73,7 +82,10 @@ router.post('/register', async (req, res) => {
     const refreshToken = generateRefreshToken(newUser._id);
 
     res.status(201).json({ accessToken, refreshToken, message: 'User registered successfully' });
-  } catch (error) {
+    //res.status(201).json({ message: 'User registered successfully' });
+  } 
+  catch (error) 
+  {
     res.status(500).json({ message: error.message });
   }
 });

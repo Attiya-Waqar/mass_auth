@@ -2,23 +2,25 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FormHeader from '../components/form_header';
 
-const Register = () => {
+const Register = () => 
+{
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => 
+  {
     e.preventDefault();
     const accessToken = localStorage.getItem('accessToken');
     try 
     {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch('http://localhost:5000/api/register', 
+      {
         method: 'POST',
         headers: 
         {
-        	Authorization: `Bearer ${accessToken}`,
           	'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, email, password }),
@@ -32,13 +34,7 @@ const Register = () => {
       }
 
       const data = await response.json();
-      console.log(data); // Handle success data or store token
-      if (data.accessToken) 
-      {
-        localStorage.setItem('accessToken', data.accessToken); // Store the access token
-        console.log("stored access storage in local storage");
-      }
-
+      console.log(data); 
       // Redirect to another page or update state upon successful registration
       navigate('/login');
     } 

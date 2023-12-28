@@ -1,41 +1,63 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import FormHeader from '../components/form_header';
 
-const Login = () => {
+const Login = () => 
+{
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const accessToken = localStorage.getItem("accessToken");
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  const accessToken = localStorage.getItem('accessToken');
+  // useEffect(() =>
+  // {
+  //   if (accessToken) 
+  //   {
+  //     navigate('/dashboard'); // Redirect to dashboard if already authenticated
+  //   }
+  // }, [accessToken, navigate]);
 
-  try {
-    const response = await fetch('http://localhost:5000/api/login', {
-      method: 'POST',
-      headers: {
-         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-      credentials: 'include', // Include credentials if needed
-    });
+  const handleSubmit = async (e) => 
+  {
+    e.preventDefault();
+    try 
+    {
+      // if (accessToken) 
+      // {
+      //     navigate('/dashboard'); // Redirect to dashboard if already authenticated
+      //     return;
+      // }
 
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Login failed');
+      const response = await fetch('http://localhost:5000/api/login',
+       {
+        method: 'POST',
+        headers: 
+        {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+        credentials: 'include', // Include credentials if needed
+      });
+
+      if (!response.ok) 
+      {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage || 'Login failed');
+      }
+
+      const data = await response.json();
+      console.log(data); // Handle success data or store token
+
+      // Redirect to dashboard upon successful login
+      navigate('/dashboard');
+    } 
+    catch (error) 
+    {
+      setError(error.message);
+      console.error('Error:', error);
     }
-
-    const data = await response.json();
-    console.log(data); // Handle success data or store token
-
-    // Redirect to another page or update state upon successful login
-  } catch (error) {
-    setError(error.message);
-    console.error('Error:', error);
-  }
-};
+  };
 
   return (
     <>
@@ -79,3 +101,5 @@ const Login = () => {
 };
 
 export default Login;
+
+
