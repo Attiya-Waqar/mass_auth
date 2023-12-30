@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import Header from '../components/header';
 import AlertBox from '../components/alertBox';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,15 @@ import '../styles/styles.css';
 
 function Dashboard() 
 {
+	const isAuthenticated = !!localStorage.getItem('accessToken');
+	console.log(isAuthenticated);
 	const navigate = useNavigate();
+	useEffect(() => 
+	{
+      if (!isAuthenticated) 
+        navigate('/login'); 
+ 	}, [isAuthenticated, navigate]);
+
 	const handleLogout = () =>
 	{
 		localStorage.removeItem('accessToken');

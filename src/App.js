@@ -2,22 +2,19 @@ import Login from "./pages/loginForm";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/registerForm";
 import Dashboard from "./pages/dashboard";
+//import PrivateRoute from './components/privateRoute';
 import './styles/tailwind.css';
 
-// const PrivateRoute = ({ element: Element, ...rest }) => 
-// {
-//   const isAuthenticated = !!localStorage.getItem('accessToken');
-//   return isAuthenticated ? <Element {...rest} /> : <Navigate to="/login" />;
-// };
-
-function App() {
+function App() 
+{
+  const token = localStorage.getItem('accessToken');
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/dashboard" element={< Dashboard />} exact />
       	<Route path='/register' element={<Register/>}/>
         <Route path="/login" element={<Login />}/>
-      
-        <Route path="/dashboard" element={<Dashboard />}/>
+        <Route path="*" element={<p>There's nothing here: 404!</p>} />
       </Routes>
     </BrowserRouter>
   );
