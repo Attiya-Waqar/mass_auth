@@ -17,7 +17,7 @@ function Header()
 		      </li>
 		    </div>
 		    <div className="d-flex align-items-center">
-		      <Link className="nav-link text-white" style={{ fontSize: '1rem' }} to="/login">Logout</Link>
+		      <Link className="nav-link" style={{ fontSize: '1.5rem', color:'orange' }} to="/login">Logout</Link>
 		    </div>
 		  </ul>
 		</div>
